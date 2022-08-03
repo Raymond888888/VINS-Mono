@@ -2,7 +2,8 @@
 
 #common parameters
 imu_topic: "/imu0"
-image_topic: "/cam0/image_raw"
+# image_topic: "/cam0/image_raw"    #rgb: /cam0/image_raw 
+image_topic: "/cam1/image_raw"    #the: /cam1/image_raw 
 output_path: "/usr/workspace/vinsoutput/"
 
 #camera calibration 
@@ -10,7 +11,7 @@ model_type: PINHOLE
 camera_name: camera
 image_width: 640
 image_height: 480
-distortion_parameters:
+distortion_parameters:    #TODO
    k1: -2.917e-01
    k2: 8.228e-02
    p1: 5.333e-05
