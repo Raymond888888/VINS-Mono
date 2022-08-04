@@ -91,9 +91,9 @@ void new_sequence() {
 }
 
 void image_callback(const sensor_msgs::ImageConstPtr &image_msg) {
-    std::string _encode = image_msg->encoding;
-    ROS_INFO("image_info:%s", _encode.c_str());
-    ROS_INFO("image_info:width: %d height:%d",image_msg->width,image_msg->height);
+    // std::string _encode = image_msg->encoding;
+    // ROS_INFO("image_info:%s", _encode.c_str());
+    // ROS_INFO("image_info:width: %d height:%d",image_msg->width,image_msg->height);
     
     if (!LOOP_CLOSURE)
         return;
