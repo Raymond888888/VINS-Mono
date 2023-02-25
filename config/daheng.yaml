@@ -1,0 +1,93 @@
+%YAML:1.0
+
+imu_topic: "/imu/data"
+image_topic: "/galaxy_camera/galaxy_camera/image_raw"
+# image_topic: "/camera/edge"
+# image_topic: "/galaxy"
+output_path: "/home/raymond/vins_output/rgbcam"         # vins outputs will be wrttento vins_folder_path + output_path
+
+#camera calibration 
+model_type: PINHOLE
+camera_name: camera
+image_width: 640
+image_height: 480
+
+#daheng_image
+# distortion_parameters:
+#    k1: -0.0177
+#    k2: 0.0343
+#    p1: 0.0
+#    p2: 0.0
+# projection_parameters:
+#    fx: 621.2559
+#    fy: 623.5647
+#    cx: 621.2867
+#    cy: 352.5975
+distortion_parameters:
+   k1: -0.0280058167327265
+   k2: 0.0370866876177434
+   p1: -0.000145471095636001
+   p2: 0.000650007546947603
+projection_parameters:
+   fx: 621.777845101542
+   fy: 621.648920442725
+   cx: 940.444309217764
+   cy: 594.184105420005
+
+# Extrinsic parameter between IMU and Camera.
+estimate_extrinsic: 2   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
+                        # 1  Have an initial guess about extrinsic parameters. We will optimize around your initial guess.
+                        # 2  Don't know anything about extrinsic parameters. You don't need to give R,T. We will try to calibrate it. Do some rotation movement at beginning.                        
+ex_calib_result_path: "/config/ex_calib_result_galaxy.yaml"  # If you choose 1 or 2, the extrinsic calibration result will be written vins_folder_path + ex_calib_result_path.                        
+extrinsicRotation: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [  -8.5319431158461523e-03, -2.4073993503830604e-02, 9.9967377117910128e-01, 
+            -9.9994067892002758e-01, -6.5637463295002973e-03, -8.6922882532109447e-03,
+            6.7708631372154771e-03, -9.9968863156029730e-01, -2.4016563898226817e-02 ]
+extrinsicTranslation: !!opencv-matrix
+   rows: 3
+   cols: 1
+   dt: d
+   data: [ 8.8832391543276212e-03, 3.2042231175316186e-04, 8.3912791646841885e-02 ]
+
+#feature traker paprameters
+max_cnt: 250            # max feature number in feature tracking
+min_dist: 20            # min distance between two features 
+freq: 10                # frequence (Hz) of publish tracking result. At least 10Hz for good estimation. If set 0, the frequence will be same as raw image 
+F_threshold: 1.0        # ransac threshold (pixel)
+show_track: 1           # publish tracking image as topic
+equalize: 1             # if image is too dark or light, trun on equalize to find enough features
+fisheye: 0              # if using fisheye, trun on it. A circle mask will be loaded to remove edge noisy points
+
+#optimization parameters
+max_solver_time: 0.04  # max solver itration time (ms), to guarantee real time
+max_num_iterations: 8   # max solver itrations, to guarantee real time
+keyframe_parallax: 10.0 # keyframe selection threshold (pixel)
+
+#new mti-g-710 imu parameters       The more accurate parameters you provide, the better performance
+acc_n: 1.2163799584446335e-02          # accelerometer measurement noise standard deviation. #0.2
+gyr_n: 3.0572547761517702e-03         # gyroscope measurement noise standard deviation.     #0.05
+acc_w: 1.4453533271304003e-04         # accelerometer bias random work noise standard deviation.  #0.02
+gyr_w: 5.2968987141886054e-05       # gyroscope bias random work noise standard deviation.     #4.0e-5
+g_norm: 9.79       # gravity magnitude
+
+#loop closure parameters
+loop_closure: 0                    # start loop closure
+fast_relocalization: 1             # useful in real-time and large project
+load_previous_pose_graph: 0        # load and reuse previous pose graph; load from 'pose_graph_save_path'
+pose_graph_save_path: "/home/raymond/pose_graph/" # save and load path
+
+#unsynchronization parameters
+estimate_td: 0                      # online estimate time offset between camera and imu
+td: 0                         # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+
+#rolling shutter parameters
+rolling_shutter: 0                      # 0: global shutter camera, 1: rolling shutter camera
+rolling_shutter_tr: 0               # unit: s. rolling shutter read out time per frame (from data sheet). 
+
+#visualization parameters
+save_image: 1                   # save image in pose graph for visualization prupose; you can close this function by setting 0 
+visualize_imu_forward: 0        # output imu forward propogation to achieve low latency and high frequence results
+visualize_camera_size: 0.4      # size of camera marker in RVIZ
