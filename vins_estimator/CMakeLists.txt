@@ -54,3 +54,10 @@ add_executable(vins_estimator
 target_link_libraries(vins_estimator ${catkin_LIBRARIES} ${OpenCV_LIBS} ${CERES_LIBRARIES}) 
 
 
+######################
+### Python Scripts
+######################
+catkin_install_python(PROGRAMS
+  scripts/split_thermal_images.py  # Add this line to install your Python script
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

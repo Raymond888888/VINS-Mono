@@ -1,0 +1,48 @@
+<launch>
+    <arg name="config_path" default = "$(find feature_tracker)/../config/scdf/scdf_thermal_config.yaml" />
+	  <arg name="vins_path" default = "$(find feature_tracker)/../config/../" />
+    
+    <node name="feature_tracker" pkg="feature_tracker" type="feature_tracker" output="log">
+        <param name="config_file" type="string" value="$(arg config_path)" />
+        <param name="vins_folder" type="string" value="$(arg vins_path)" />
+    </node>
+
+    <node name="vins_estimator" pkg="vins_estimator" type="vins_estimator" output="screen">
+       <param name="config_file" type="string" value="$(arg config_path)" />
+       <param name="vins_folder" type="string" value="$(arg vins_path)" />
+    </node>
+
+    <node name="pose_graph" pkg="pose_graph" type="pose_graph" output="screen">
+        <param name="config_file" type="string" value="$(arg config_path)" />
+        <param name="visualization_shift_x" type="int" value="0" />
+        <param name="visualization_shift_y" type="int" value="0" />
+        <param name="skip_cnt" type="int" value="0" />
+        <param name="skip_dis" type="double" value="0" />
+    </node>
+
+
+
+
+
+
+
+
+
+
+    <!-- <node pkg="rosbag" type="play" name="play" args="-r 1 -s 10 '/mnt/d/datasets/SCDF/smoke/SCDF_2024-09-20-16-22-46.bag'" /> -->
+    <!-- <node pkg="rosbag" type="play" name="play" args="-r 1 -s 79 '/mnt/d/datasets/SCDF/smoke/SCDF_2024-09-20-16-28-17.bag'" /> -->
+    <node pkg="rosbag" type="play" name="play" args="-r 1 -s 95 '/mnt/d/datasets/SCDF/no_smoke/SCDF_2024-09-20-15-03-39.bag'" />
+    <!-- <node pkg="rosbag" type="play" name="play" args="-r 1 -s 0 '/mnt/d/datasets/SCDF/no_smoke/SCDF_2024-09-20-15-16-04.bag'" /> -->
+    <node pkg="image_transport" type="republish" name="republish" args="compressed in:=/thermal_cam1/image_raw raw out:=/thermal_cam1/image_raw" output="screen" respawn="true" />
+    <node name="thermal_image_splitter" pkg="vins_estimator" type="split_thermal_images.py" output="screen"/>
+
+
+
+
+
+
+
+
+    <include file="$(find vins_estimator)/launch/vins_rviz.launch"></include>
+
+</launch>

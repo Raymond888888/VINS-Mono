@@ -1,0 +1,63 @@
+<launch>
+    <arg name="config_path" default = "$(find feature_tracker)/../config/4dradlm/4dradlm_config.yaml" />
+	  <arg name="vins_path" default = "$(find feature_tracker)/../config/../" />
+    
+    <node name="feature_tracker" pkg="feature_tracker" type="feature_tracker" output="log">
+        <param name="config_file" type="string" value="$(arg config_path)" />
+        <param name="vins_folder" type="string" value="$(arg vins_path)" />
+    </node>
+
+    <node name="vins_estimator" pkg="vins_estimator" type="vins_estimator" output="screen">
+       <param name="config_file" type="string" value="$(arg config_path)" />
+       <param name="vins_folder" type="string" value="$(arg vins_path)" />
+    </node>
+
+    <node name="pose_graph" pkg="pose_graph" type="pose_graph" output="screen">
+        <param name="config_file" type="string" value="$(arg config_path)" />
+        <param name="visualization_shift_x" type="int" value="0" />
+        <param name="visualization_shift_y" type="int" value="0" />
+        <param name="skip_cnt" type="int" value="0" />
+        <param name="skip_dis" type="double" value="0" />
+    </node>
+
+
+
+
+
+
+
+
+
+
+    <arg name="path" default="/mnt/d/datasets/NTU4DRadLM/"/>
+		<arg name = "file_0" default = "loop1/loop1_2022-06-03_0.bag"/>
+		<arg name = "file_1" default = "loop1/loop1_2022-06-03_1.bag"/>
+		<arg name = "file_2" default = "loop1/loop1_2022-06-03_2.bag"/>
+		<arg name = "file_3" default = "loop1/loop1_2022-06-03_3.bag"/>
+		<arg name = "file_4" default = "loop1/loop1_2022-06-03_4.bag"/>
+
+		<!-- Plays the dataset. WARNING: changing 'rate' will cause interactions with the demo.  -->
+		<!--  /radar_pcl /radar_trk -->
+		<node pkg="rosbag" type="play" name="player" 
+			args = "--clock --rate=1 --duration=10000 -s 180
+			$(arg path)$(arg file_0)
+			$(arg path)$(arg file_1)
+			$(arg path)$(arg file_2)
+			$(arg path)$(arg file_3)
+			$(arg path)$(arg file_4)
+			--topic /radar_enhanced_pcl /rgb_cam/image_raw/compressed /thermal_cam/thermal_image/compressed /barometer/filtered /vectornav/imu
+			
+			">
+		</node>
+    <node pkg="image_transport" type="republish" name="republish" args="compressed in:=/thermal_cam/thermal_image raw out:=/thermal_cam/thermal_image" output="screen" respawn="true"/>
+
+
+
+
+
+
+
+
+    <include file="$(find vins_estimator)/launch/vins_rviz.launch"></include>
+
+</launch>
