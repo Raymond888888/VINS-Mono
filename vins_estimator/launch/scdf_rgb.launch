@@ -1,5 +1,5 @@
 <launch>
-    <arg name="config_path" default = "$(find feature_tracker)/../config/euroc/euroc_config.yaml" />
+    <arg name="config_path" default = "$(find feature_tracker)/../config/scdf/scdf_rgb_config.yaml" />
 	  <arg name="vins_path" default = "$(find feature_tracker)/../config/../" />
     
     <node name="feature_tracker" pkg="feature_tracker" type="feature_tracker" output="log">
@@ -20,9 +20,28 @@
         <param name="skip_dis" type="double" value="0" />
     </node>
 
-    <node pkg="rosbag" type="play" name="play" args="-r 1 -s 0 '/mnt/d/datasets/MH_01_easy.bag'" />
+
+
+
+
+
+
+
+
+
+    <!-- <node pkg="rosbag" type="play" name="play" args="-r 1 -s 10 '/mnt/d/datasets/SCDF/smoke/SCDF_2024-09-20-16-22-46.bag'" /> -->
+    <!-- <node pkg="rosbag" type="play" name="play" args="-r 1 -s 79 '/mnt/d/datasets/SCDF/smoke/SCDF_2024-09-20-16-28-17.bag'" /> -->
+    <node pkg="rosbag" type="play" name="play" args="-r 1 -s 95 '/mnt/d/datasets/SCDF/no_smoke/SCDF_2024-09-20-15-03-39.bag'" />
+    <!-- <node pkg="rosbag" type="play" name="play" args="-r 1 -s 0 '/mnt/d/datasets/SCDF/no_smoke/SCDF_2024-09-20-15-16-04.bag'" /> -->
+    <node pkg="image_transport" type="republish" name="republish" args="compressed in:=/rgb_cam/image_raw raw out:=/rgb_cam/image_raw" output="screen" respawn="true" />
+
+
+
+
+
+
+
 
     <include file="$(find vins_estimator)/launch/vins_rviz.launch"></include>
-
 
 </launch>
