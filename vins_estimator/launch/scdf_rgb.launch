@@ -30,9 +30,10 @@
 
 
     <!-- <node pkg="rosbag" type="play" name="play" args="-r 1 -s 10 '/mnt/d/datasets/SCDF/smoke/SCDF_2024-09-20-16-22-46.bag'" /> -->
-    <!-- <node pkg="rosbag" type="play" name="play" args="-r 1 -s 79 '/mnt/d/datasets/SCDF/smoke/SCDF_2024-09-20-16-28-17.bag'" /> -->
-    <node pkg="rosbag" type="play" name="play" args="-r 1 -s 95 '/mnt/d/datasets/SCDF/no_smoke/SCDF_2024-09-20-15-03-39.bag'" />
+    <node pkg="rosbag" type="play" name="play" args="-r 1 -s 79 '/mnt/d/datasets/SCDF/smoke/SCDF_2024-09-20-16-28-17.bag'" />
+    <!-- <node pkg="rosbag" type="play" name="play" args="-r 1 -s 95 '/mnt/d/datasets/SCDF/no_smoke/SCDF_2024-09-20-15-03-39.bag'" /> -->
     <!-- <node pkg="rosbag" type="play" name="play" args="-r 1 -s 0 '/mnt/d/datasets/SCDF/no_smoke/SCDF_2024-09-20-15-16-04.bag'" /> -->
+    <!-- <node pkg="rosbag" type="play" name="play" args="-r 1 -s 0 '/mnt/d/datasets/NTU-360radar-Dataset/2024-09-10-15-05-24_carparkP_0.bag'" /> -->
     <node pkg="image_transport" type="republish" name="republish" args="compressed in:=/rgb_cam/image_raw raw out:=/rgb_cam/image_raw" output="screen" respawn="true" />
 
 
