@@ -20,7 +20,7 @@
         <param name="skip_dis" type="double" value="0" />
     </node>
 
-    <node pkg="rosbag" type="play" name="play" args="-r 1 -s 0 '/mnt/d/datasets/MH_01_easy.bag'" />
+    <node pkg="rosbag" type="play" name="play" args="-r 1 -s 0 '/mnt/d/datasets/EuRoC/MH_01_easy.bag'" />
 
     <include file="$(find vins_estimator)/launch/vins_rviz.launch"></include>
 
